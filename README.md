@@ -409,6 +409,133 @@ Enter your Device Eui from the TTN website (https://console.thethingsnetwork.org
 
 You should then run the program on your Arduino and the data should appear on myDevices dashboard and be updated every minute (https://cayenne.mydevices.com/cayenne/dashboard/lora/).
 
-We hope you had fun!
+## Activation by personalisation method
 
-*This work is licensed under Creative Commons Attribution 4.0 https://creativecommons.org/licenses/by/4.0/legalcode *
+If you can't get OTAA to work (because you have poor downlink reception from the gateway for example) then you can use the following code instead to activate your node using ABP and still complete the workshop.
+
+```c
+#include <CayenneLPP.h>
+#include <Adafruit_BME280.h>
+#include "RAK811.h"
+#include "SoftwareSerial.h"
+#define WORK_MODE LoRaWAN   //  LoRaWAN or LoRaP2P
+#define JOIN_MODE ABP   //  OTAA or ABP
+#if JOIN_MODE == ABP
+String NwkSKey = ""; // Fill this out
+String AppSKey = ""; // Fill this out
+String DevAddr = ""; // Fill this out
+#endif
+#define TXpin 11   // Set the virtual serial port pins
+#define RXpin 10
+#define DebugSerial Serial
+
+Adafruit_BME280 bme; // I2C
+CayenneLPP lpp(51);
+SoftwareSerial RAKSerial(RXpin,TXpin);    // Declare a virtual serial port
+
+int RESET_PIN = 12;
+bool InitLoRaWAN(void);
+RAK811 RAKLoRa(RAKSerial,DebugSerial);
+
+void setup() {
+ //Define Reset Pin
+ pinMode(RESET_PIN, OUTPUT);
+ //Setup Debug Serial on USB Port
+ DebugSerial.begin(9600);
+ while(DebugSerial.read()>= 0) {}
+ while(!DebugSerial);
+ //Print debug info
+ DebugSerial.println("StartUP");
+ DebugSerial.println("Reset");
+ //Reset the RAK Module
+ digitalWrite(RESET_PIN, LOW);   // turn the pin low to Reset
+ digitalWrite(RESET_PIN, HIGH);    // then high to enable
+ DebugSerial.println("Success");
+ RAKSerial.begin(115200); // Arduino Shield. The number can be changed! Search for serial speeds
+ delay(100);
+ DebugSerial.println(RAKLoRa.rk_getVersion());
+ delay(200);
+ DebugSerial.println(RAKLoRa.rk_getBand());
+ delay(200);
+
+ while (!InitLoRaWAN());
+
+    bme.begin();  
+
+
+}
+bool InitLoRaWAN(void)
+{
+  RAKLoRa.rk_reset(1);
+  RAKLoRa.rk_setWorkingMode(WORK_MODE);
+  RAKLoRa.rk_recvData();
+  RAKLoRa.rk_recvData();
+  if ( RAKLoRa.rk_recvData() == "OK")
+  {
+    if (RAKLoRa.rk_initABP(DevAddr, NwkSKey, AppSKey))
+    {
+      Serial.println("You init ABP parameter is OK!");
+      if (RAKLoRa.rk_joinLoRaNetwork(JOIN_MODE))
+      {
+        Serial.println("You join Network success!");
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+void loop() {
+
+
+  Serial.print("Temperature = ");
+  Serial.print(bme.readTemperature());
+  Serial.println(" *C");
+  Serial.print("Pressure = ");
+  Serial.print(bme.readPressure() / 100.0F);
+  Serial.println(" hPa");
+  Serial.print("Humidity = ");
+  Serial.print(bme.readHumidity());
+  Serial.println(" %");
+
+
+  lpp.reset();
+  lpp.addTemperature(1, bme.readTemperature());
+  lpp.addBarometricPressure(2, bme.readPressure());
+  lpp.addRelativeHumidity(3, bme.readHumidity());
+    
+  char buildBuffer[4] = {0};
+  char compositionBuffer[lpp.getSize()*2+1] = {0};  // this will hold a string we build
+
+  for (int i = 0; i < lpp.getSize(); i++) {
+    sprintf( buildBuffer, "%02X", (uint8_t)lpp.getBuffer()[i]);
+    strcat( compositionBuffer, buildBuffer);
+  }
+  DebugSerial.print(compositionBuffer);
+  DebugSerial.println(" (HEX)");
+  
+  int packetsflag = 1; // 0: unconfirmed packets, 1: confirmed packets
+  if (RAKLoRa.rk_sendData(packetsflag, 1, compositionBuffer ))
+  {
+    for (unsigned long start = millis(); millis() - start < 6000L;)
+    {
+      String ret = RAKLoRa.rk_recvData();
+      if (ret.startsWith(STATUS_TX_COMFIRMED) || ret.startsWith(STATUS_TX_UNCOMFIRMED))
+      {
+        DebugSerial.println("Send data ok!");
+        delay(5000);
+        return;
+      }
+    }
+    DebugSerial.println("Send data error!");
+        delay(5000);
+  }
+  RAKLoRa.rk_recvData();
+
+  
+}
+```
+
+## We hope you had fun!
+
+*This work is licensed under Creative Commons Attribution 4.0* https://creativecommons.org/licenses/by/4.0/legalcode
