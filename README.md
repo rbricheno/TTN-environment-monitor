@@ -1,5 +1,7 @@
 # TTN environment monitor
-By David Batey, Josh Milroy and Rob Bricheno
+*By David Batey, Josh Milroy and Rob Bricheno*
+
+## Getting started
 
 For this project you will need the following hardware:
 
@@ -23,6 +25,8 @@ Then you should create a The Things Network account on the website (https://acco
 After this, you will need to register your application at https://console.thethingsnetwork.org/applications/add. Here, you need to fill in the application ID and description.
 
 Next, you will need to register your device at https://console.thethingsnetwork.org/applications/application/devices/register. You have to enter a Device ID and click the symbol next the Device EUI text box.
+
+## Testing LoRaWAN
 
 Now we will test "Over The Air Activation" on the Arduino and shield. Connect the shield to the top of your Arduino Uno as shown here:
 
@@ -144,6 +148,8 @@ Fill out the Dev Eui, App Eui and App Key which you can find on the TTN website 
 
 Run this code on your Arduino by pressing “Upload” and then open the TTN website. In the TTN website go the data page (https://console.thethingsnetwork.org/applications/application/devices/device/data). Here, the payload should state “72616B776972656C657373”.
 
+## Adding the BME280
+
 Next we will test the BME280 sensor. Either plug the sensor into the arduino directly or the same pins on the shield. The pins should be connected:
 
 | BME280  | Arduino |
@@ -241,6 +247,8 @@ You will need to install the Adafruit BME 280 library and Adafruit unified senso
 Now, you need to wire the BME280 to the Arduino shield. Please see image and diagram below. 
 
 This program should return 3 values (Temperature, Humidity and Pressure) into the serial monitor which can be accessed by Ctrl+Shift+M. Just be wary that some shields work at faster speed, so the baud rate must be changed.
+
+## Sending BME280 data into The Things Network
 
 The next step is to send the BME 280 data to TTN in Cayenne format. This is done through this code:
 
@@ -385,7 +393,22 @@ void loop() {
 }
 ```
 
-Fill out the Dev Eui, App Eui and App Key which you can find on the TTN website (https://console.thethingsnetwork.org/applications/application/devices/device ). Then on the TTN website, click on the payload format tab (https://console.thethingsnetwork.org/applications/application/payload-formats). Then click on the drop-down menu and choose Cayenne. Now, you can upload the program to the Arduino and the data should appear in the payloads. 
-Finally, click on the Intergrations tab (https://console.thethingsnetwork.org/applications/application/integrations) and click “add integration” (https://console.thethingsnetwork.org/applications/application/integrations/create). Choose myDevices (https://console.thethingsnetwork.org/applications/application/integrations/create/http-cayenne) and enter a Process ID and click on the access key drop-down box and choose default key. Create an account at https://accounts.mydevices.com/auth/realms/cayenne/login-actions/registration?client_id=cayenne-web-app&tab_id=27_MIrlvDiU . Choose LoRa (https://cayenne.mydevices.com/cayenne/dashboard/first-visit/lora) and then scroll down and choose The Things Network (Under the networks sidebar) and then choose Cayenne Cayenne LPP. Enter your Device Eui from the TTN website (https://console.thethingsnetwork.org/applications/application/devices/device ) and then press add device. You should then run the program on your Arduino and the data should appear on myDevices dashboard and be updated every minute (https://cayenne.mydevices.com/cayenne/dashboard/lora/).
+Fill out the Dev Eui, App Eui and App Key which you can find on the TTN website (https://console.thethingsnetwork.org/applications/application/devices/device ). Then on the TTN website, click on the payload format tab (https://console.thethingsnetwork.org/applications/application/payload-formats). Then click on the drop-down menu and choose Cayenne. Now, you can upload the program to the Arduino and the data should appear in the payloads.
 
-https://creativecommons.org/licenses/by/4.0/legalcode
+## Adding a MyDevices dashboard
+
+Finally, click on the Intergrations tab (https://console.thethingsnetwork.org/applications/application/integrations) and click “add integration” (https://console.thethingsnetwork.org/applications/application/integrations/create).
+
+Choose myDevices (https://console.thethingsnetwork.org/applications/application/integrations/create/http-cayenne) and enter a Process ID and click on the access key drop-down box and choose default key.
+
+Create an account at https://accounts.mydevices.com/auth/realms/cayenne/login-actions/registration?client_id=cayenne-web-app&tab_id=27_MIrlvDiU .
+
+Choose LoRa (https://cayenne.mydevices.com/cayenne/dashboard/first-visit/lora) and then scroll down and choose The Things Network (Under the networks sidebar) and then choose Cayenne Cayenne LPP.
+
+Enter your Device Eui from the TTN website (https://console.thethingsnetwork.org/applications/application/devices/device ) and then press add device.
+
+You should then run the program on your Arduino and the data should appear on myDevices dashboard and be updated every minute (https://cayenne.mydevices.com/cayenne/dashboard/lora/).
+
+We hope you had fun!
+
+*This work is licensed under Creative Commons Attribution 4.0 https://creativecommons.org/licenses/by/4.0/legalcode *
