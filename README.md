@@ -7,9 +7,14 @@ For this project you will need the following hardware:
 
 ![Arduino Uno](/images/arduino-uno.jpg?raw=true "Arduino Uno")
 
-* BME280 sensor in a breakout board - https://www.bosch-sensortec.com/bst/products/all_products/bme280 - You can find these on Amazon or eBay
+* BME280 sensor in a breakout board - https://www.bosch-sensortec.com/bst/products/all_products/bme280 - You can find these on Amazon or eBay. Ours runs at 5V.
+
+![BME280](/images/bme280.jpg?raw=true "BME280")
+
 * UNIROI Starter Kit (or another Arduino starter kit) - http://uniroi.net/a/Products/20190401/70.html
 * Pi Supply Arduino LoRa node shield  - https://uk.pi-supply.com/products/iot-lora-node-shield
+
+![Arduino LoRa node shield](/images/pi-supply-shield.jpg?raw=true "Arduino LoRa node shield")
 
 Firstly, you should install the Arduino IDE from the Arduino website (https://www.arduino.cc/en/main/software).
 
@@ -19,7 +24,9 @@ After this, you will need to register your application at https://console.thethi
 
 Next, you will need to register your device at https://console.thethingsnetwork.org/applications/application/devices/register. You have to enter a Device ID and click the symbol next the Device EUI text box.
 
-Now we will test "Over The Air Activation" on the Arduino and shield. Connect the shield to the top of your Arduino Uno as shown below:
+Now we will test "Over The Air Activation" on the Arduino and shield. Connect the shield to the top of your Arduino Uno as shown here:
+
+![Connecting the shield](/images/arduino-with-shield.jpg?raw=true "Connecting the shield")
 
 In the Arduino IDE, enter this code: 
 
@@ -133,11 +140,27 @@ void loop() {
 }
 ```
 
-Fill out the Dev Eui, App Eui and App Key which you can find on the TTN website (https://console.thethingsnetwork.org/applications/application/devices/device ). You will also need to download and install the RAK811 Arduino Library from https://github.com/PiSupply/RAK811-Arduino
+Fill out the Dev Eui, App Eui and App Key which you can find on the TTN website (https://console.thethingsnetwork.org/applications/application/devices/device ). You will also need to download and install the RAK811 Arduino Library from https://github.com/PiSupply/RAK811-Arduino . Download the RAK811-Arduino repository as a Zip file and in the Arduino IDE use "Sketch -> Add Library -> Add .ZIP library" and add the downloaded zip file.
 
 Run this code on your Arduino by pressing “Upload” and then open the TTN website. In the TTN website go the data page (https://console.thethingsnetwork.org/applications/application/devices/device/data). Here, the payload should state “72616B776972656C657373”.
 
-Next we will test the BME280 sensor. Type this code in a new Arduino window:
+Next we will test the BME280 sensor. Either plug the sensor into the arduino directly or the same pins on the shield. The pins should be connected:
+
+| BME280  | Arduino |
+| ------------- | ------------- |
+| VIN | 5V  |
+| GND  | GND |
+| SCL | A5  |
+| SDA  | A4 |
+
+
+![BME280 connections](/images/fritzing.jpg?raw=true "BME280 connections")
+
+It should look something like this when all connected up:
+
+![BME280 connections](/images/everything.jpg?raw=true "BME280 connections")
+
+Type this code in a new Arduino window:
 
 ```c
 #include <Wire.h>
