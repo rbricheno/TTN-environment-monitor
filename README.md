@@ -409,6 +409,9 @@ Enter your Device Eui from the TTN website (https://console.thethingsnetwork.org
 
 You should then run the program on your Arduino and the data should appear on myDevices dashboard and be updated every minute (https://cayenne.mydevices.com/cayenne/dashboard/lora/).
 
+
+![MyDevices dashboard](/images/dashboard.png?raw=true "MyDevices dashboard")
+
 ## Activation by personalisation method
 
 If you can't get OTAA to work (because you have poor downlink reception from the gateway for example) then you can use the following code instead to activate your node using ABP and still complete the workshop.
