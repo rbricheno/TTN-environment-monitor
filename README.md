@@ -4,6 +4,9 @@ By David Batey, Josh Milroy and Rob Bricheno
 For this project you will need the following hardware:
 
 * Arduino Uno - https://store.arduino.cc/arduino-uno-rev3
+
+![Arduino Uno](/images/arduino-uno.jpg?raw=true "Arduino Uno")
+
 * BME280 sensor in a breakout board - https://www.bosch-sensortec.com/bst/products/all_products/bme280 - You can find these on Amazon or eBay
 * UNIROI Starter Kit (or another Arduino starter kit) - http://uniroi.net/a/Products/20190401/70.html
 * Pi Supply Arduino LoRa node shield  - https://uk.pi-supply.com/products/iot-lora-node-shield
