@@ -385,7 +385,7 @@ Fill out the Dev Eui, App Eui and App Key which you can find on the TTN website 
 
 Finally, click on the Intergrations tab (https://console.thethingsnetwork.org/applications/application/integrations) and click “add integration” (https://console.thethingsnetwork.org/applications/application/integrations/create).
 
-Choose myDevices (https://console.thethingsnetwork.org/applications/application/integrations/create/http-cayenne) and enter a Process ID and click on the access key drop-down box and choose default key.
+Choose myDevices (https://console.thethingsnetwork.org/applications/application/integrations/create/http-cayenne) and enter a Process ID (you can just make something up) and click on the access key drop-down box and choose default key.
 
 Create an account at https://accounts.mydevices.com/auth/realms/cayenne/login-actions/registration?client_id=cayenne-web-app&tab_id=27_MIrlvDiU .
 
