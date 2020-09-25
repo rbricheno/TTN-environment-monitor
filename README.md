@@ -32,7 +32,11 @@ Now we will test "Over The Air Activation" on the Arduino and shield. Connect th
 
 ![Connecting the shield](/images/arduino-with-shield.jpg?raw=true "Connecting the shield")
 
-In the Arduino IDE, enter this code: 
+In the Arduino IDE, create a new sketch.
+
+You will need to download and install the RAK811 Arduino Library from https://github.com/PiSupply/RAK811-Arduino . Download the RAK811-Arduino repository as a Zip file and in the Arduino IDE use "Sketch -> Add Library -> Add .ZIP library" and add the downloaded zip file.
+
+Now enter this code: 
 
 ```c
 #include "RAK811.h"
@@ -144,7 +148,7 @@ void loop() {
 }
 ```
 
-Fill out the Dev Eui, App Eui and App Key which you can find on the TTN website (https://console.thethingsnetwork.org/applications/application/devices/device ). You will also need to download and install the RAK811 Arduino Library from https://github.com/PiSupply/RAK811-Arduino . Download the RAK811-Arduino repository as a Zip file and in the Arduino IDE use "Sketch -> Add Library -> Add .ZIP library" and add the downloaded zip file.
+Fill out the Dev Eui, App Eui and App Key which you can find on the TTN website (https://console.thethingsnetwork.org/applications/application/devices/device ).
 
 Run this code on your Arduino by pressing “Upload” and then open the TTN website. In the TTN website go the data page (https://console.thethingsnetwork.org/applications/application/devices/device/data). Here, the payload should state “72616B776972656C657373”.
 
@@ -159,31 +163,22 @@ Next we will test the BME280 sensor. Either plug the sensor into the arduino dir
 | SCL | A5  |
 | SDA  | A4 |
 
-
-![BME280 connections](/images/fritzing.jpg?raw=true "BME280 connections")
-
 It should look something like this when all connected up:
 
 ![BME280 connections](/images/everything.jpg?raw=true "BME280 connections")
 
-Type this code in a new Arduino window:
+You will need to install the Adafruit BME280 library and Adafruit unified sensors library, both of which should be available to find in the "Add library" tool within the Arduino IDE.
+
+Then type this code in a new Arduino window:
 
 ```c
 #include <Wire.h>
-#include <SPI.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
- 
-#define BME_SCK 13
-#define BME_MISO 12
-#define BME_MOSI 11
-#define BME_CS 10
  
 #define SEALEVELPRESSURE_HPA (1013.25)
  
 Adafruit_BME280 bme; // I2C
-//Adafruit_BME280 bme(BME_CS); // hardware SPI
-//Adafruit_BME280 bme(BME_CS, BME_MOSI, BME_MISO, BME_SCK); // software SPI
  
 unsigned long delayTime;
  
@@ -195,8 +190,11 @@ void setup() {
     unsigned status;
     
     // default settings
-    // (you can also pass in a Wire library object like &Wire2)
-    status = bme.begin();  
+    // status = bme.begin();
+    // We found that since version 2 of the Adafruit library
+    // we have to initialise our (non-Adafruit-branded) I2C
+    // BME280 like this:
+    status = bme.begin(0x76, &Wire);
     if (!status) {
         Serial.println("Could not find a valid BME280 sensor, check wiring, address, sensor ID!");
         Serial.print("SensorID was: 0x"); Serial.println(bme.sensorID(),16);
@@ -242,10 +240,6 @@ void printValues() {
 }
 ```
 
-You will need to install the Adafruit BME 280 library and Adafruit unified sensors library, both of which should be available to find in the "Add library" tool within the Arduino IDE.
-
-Now, you need to wire the BME280 to the Arduino shield. Please see image and diagram below. 
-
 This program should return 3 values (Temperature, Humidity and Pressure) into the serial monitor which can be accessed by Ctrl+Shift+M. Just be wary that some shields work at faster speed, so the baud rate must be changed.
 
 ## Sending BME280 data into The Things Network
@@ -254,15 +248,17 @@ The next step is to send the BME 280 data to TTN in Cayenne format. This is done
 
 ```c
 #include <CayenneLPP.h>
+#include <Wire.h>
+#include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
 #include "RAK811.h"
 #include "SoftwareSerial.h"
 #define WORK_MODE LoRaWAN   //  LoRaWAN or LoRaP2P
 #define JOIN_MODE OTAA    //  OTAA or ABP
 #if JOIN_MODE == OTAA
-String DevEui = ""; // Fill this out
-String AppEui = ""; // Fill this out
-String AppKey = ""; // Fill This out
+String DevEui = "<PUT YOUR KEY HERE FROM TTN CONSOLE>"; // Fill this out
+String AppEui = "<PUT YOUR KEY HERE FROM TTN CONSOLE>"; // Fill this out
+String AppKey = "<PUT YOUR KEY HERE FROM TTN CONSOLE>"; // Fill This out
 #endif
 #define TXpin 11   // Set the virtual serial port pins
 #define RXpin 10
@@ -277,32 +273,31 @@ bool InitLoRaWAN(void);
 RAK811 RAKLoRa(RAKSerial,DebugSerial);
  
 void setup() {
-//Define Reset Pin
-pinMode(RESET_PIN, OUTPUT);
-//Setup Debug Serial on USB Port
-DebugSerial.begin(9600);
-while(DebugSerial.read()>= 0) {}
-while(!DebugSerial);
-//Print debug info
-DebugSerial.println("StartUP");
-DebugSerial.println("Reset");
-//Reset the RAK Module
-digitalWrite(RESET_PIN, LOW);   // turn the pin low to Reset
-digitalWrite(RESET_PIN, HIGH);    // then high to enable
-DebugSerial.println("Success");
-RAKSerial.begin(9600); // Arduino Shield
-delay(100);
-DebugSerial.println(RAKLoRa.rk_getVersion());
-delay(200);
-DebugSerial.println(RAKLoRa.rk_getBand());
-delay(200);
+  //Define Reset Pin
+  pinMode(RESET_PIN, OUTPUT);
+  //Setup Debug Serial on USB Port
+  DebugSerial.begin(9600);
+  while(DebugSerial.read()>= 0) {}
+  while(!DebugSerial);
+  //Print debug info
+  DebugSerial.println("StartUP");
+  DebugSerial.println("Reset");
+  //Reset the RAK Module
+  digitalWrite(RESET_PIN, LOW);   // turn the pin low to Reset
+  digitalWrite(RESET_PIN, HIGH);    // then high to enable
+  DebugSerial.println("Success");
+  RAKSerial.begin(9600); // Arduino Shield
+  delay(100);
+  DebugSerial.println(RAKLoRa.rk_getVersion());
+  delay(200);
+  DebugSerial.println(RAKLoRa.rk_getBand());
+  delay(200);
  
-while (!InitLoRaWAN());
- 
-    bme.begin();  
- 
- 
+  while (!InitLoRaWAN());
+
+  bme.begin(0x76, &Wire);  
 }
+
 bool InitLoRaWAN(void)
 {
   RAKLoRa.rk_setWorkingMode(WORK_MODE);
@@ -364,18 +359,9 @@ void loop() {
   lpp.addTemperature(1, bme.readTemperature());
   lpp.addRelativeHumidity(2, bme.readHumidity());
   lpp.addBarometricPressure(3, bme.readPressure());
-  char buildBuffer[4] = {0};
-  char compositionBuffer[lpp.getSize()*2+1] = {0};  // this will hold a string we build
- 
-  for (int i = 0; i < lpp.getSize(); i++) {
-    sprintf( buildBuffer, "%02X", (uint8_t)lpp.getBuffer()[i]);
-    strcat( compositionBuffer, buildBuffer);
-  }
-  DebugSerial.print(compositionBuffer);
-  DebugSerial.println(" (HEX)");
   
   int packetsflag = 1; // 0: unconfirmed packets, 1: confirmed packets
-  if (RAKLoRa.rk_sendData(packetsflag, 1, compositionBuffer ))
+  if (RAKLoRa.rk_sendBytes(packetsflag, 1, lpp.getBuffer(), lpp.getSize()))
   {
     for (unsigned long start = millis(); millis() - start < 90000L;)
     {
@@ -418,6 +404,8 @@ If you can't get OTAA to work (because you have poor downlink reception from the
 
 ```c
 #include <CayenneLPP.h>
+#include <Wire.h>
+#include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
 #include "RAK811.h"
 #include "SoftwareSerial.h"
@@ -441,29 +429,29 @@ bool InitLoRaWAN(void);
 RAK811 RAKLoRa(RAKSerial,DebugSerial);
 
 void setup() {
- //Define Reset Pin
- pinMode(RESET_PIN, OUTPUT);
- //Setup Debug Serial on USB Port
- DebugSerial.begin(9600);
- while(DebugSerial.read()>= 0) {}
- while(!DebugSerial);
- //Print debug info
- DebugSerial.println("StartUP");
- DebugSerial.println("Reset");
- //Reset the RAK Module
- digitalWrite(RESET_PIN, LOW);   // turn the pin low to Reset
- digitalWrite(RESET_PIN, HIGH);    // then high to enable
- DebugSerial.println("Success");
- RAKSerial.begin(115200); // Arduino Shield. The number can be changed! Search for serial speeds
- delay(100);
- DebugSerial.println(RAKLoRa.rk_getVersion());
- delay(200);
- DebugSerial.println(RAKLoRa.rk_getBand());
- delay(200);
+  //Define Reset Pin
+  pinMode(RESET_PIN, OUTPUT);
+  //Setup Debug Serial on USB Port
+  DebugSerial.begin(9600);
+  while(DebugSerial.read()>= 0) {}
+  while(!DebugSerial);
+  //Print debug info
+  DebugSerial.println("StartUP");
+  DebugSerial.println("Reset");
+  //Reset the RAK Module
+  digitalWrite(RESET_PIN, LOW);   // turn the pin low to Reset
+  digitalWrite(RESET_PIN, HIGH);    // then high to enable
+  DebugSerial.println("Success");
+  RAKSerial.begin(115200); // Arduino Shield. The number can be changed! Search for serial speeds
+  delay(100);
+  DebugSerial.println(RAKLoRa.rk_getVersion());
+  delay(200);
+  DebugSerial.println(RAKLoRa.rk_getBand());
+  delay(200);
 
- while (!InitLoRaWAN());
+  while (!InitLoRaWAN());
 
-    bme.begin();  
+  bme.begin(0x76, &Wire);  
 
 
 }
@@ -490,7 +478,6 @@ bool InitLoRaWAN(void)
 
 void loop() {
 
-
   Serial.print("Temperature = ");
   Serial.print(bme.readTemperature());
   Serial.println(" *C");
@@ -501,24 +488,13 @@ void loop() {
   Serial.print(bme.readHumidity());
   Serial.println(" %");
 
-
   lpp.reset();
   lpp.addTemperature(1, bme.readTemperature());
   lpp.addBarometricPressure(2, bme.readPressure());
   lpp.addRelativeHumidity(3, bme.readHumidity());
     
-  char buildBuffer[4] = {0};
-  char compositionBuffer[lpp.getSize()*2+1] = {0};  // this will hold a string we build
-
-  for (int i = 0; i < lpp.getSize(); i++) {
-    sprintf( buildBuffer, "%02X", (uint8_t)lpp.getBuffer()[i]);
-    strcat( compositionBuffer, buildBuffer);
-  }
-  DebugSerial.print(compositionBuffer);
-  DebugSerial.println(" (HEX)");
-  
   int packetsflag = 1; // 0: unconfirmed packets, 1: confirmed packets
-  if (RAKLoRa.rk_sendData(packetsflag, 1, compositionBuffer ))
+  if (RAKLoRa.rk_sendBytes(packetsflag, 1, lpp.getBuffer(), lpp.getSize()))
   {
     for (unsigned long start = millis(); millis() - start < 6000L;)
     {
