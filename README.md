@@ -63,29 +63,30 @@ RAK811 RAKLoRa(RAKSerial,DebugSerial);
  
  
 void setup() {
-//Define Reset Pin
-pinMode(RESET_PIN, OUTPUT);
-//Setup Debug Serial on USB Port
-DebugSerial.begin(9600);
-while(DebugSerial.read()>= 0) {}
-while(!DebugSerial);
-//Print debug info
-DebugSerial.println("StartUP");
-DebugSerial.println("Reset");
-//Reset the RAK Module
-digitalWrite(RESET_PIN, LOW);   // turn the pin low to Reset
-digitalWrite(RESET_PIN, HIGH);    // then high to enable
-DebugSerial.println("Success");
-RAKSerial.begin(9600); // Arduino Shield
-delay(100);
-DebugSerial.println(RAKLoRa.rk_getVersion());
-delay(200);
-DebugSerial.println(RAKLoRa.rk_getBand());
-delay(200);
+  // Define Reset Pin
+  pinMode(RESET_PIN, OUTPUT);
+  
+  // Setup Debug Serial on USB Port
+  DebugSerial.begin(9600);
+  while(DebugSerial.read()>= 0) {}
+  while(!DebugSerial);
+  //Print debug info
+  DebugSerial.println("StartUP");
+  DebugSerial.println("Reset");
+  //Reset the RAK Module
+  digitalWrite(RESET_PIN, LOW);   // turn the pin low to Reset
+  digitalWrite(RESET_PIN, HIGH);    // then high to enable
+  DebugSerial.println("Success");
+  RAKSerial.begin(9600); // Arduino Shield
+  delay(100);
+  DebugSerial.println(RAKLoRa.rk_getVersion());
+  delay(200);
+  DebugSerial.println(RAKLoRa.rk_getBand());
+  delay(200);
  
-while (!InitLoRaWAN());
- 
+  while (!InitLoRaWAN());
 }
+
 bool InitLoRaWAN(void)
 {
   RAKLoRa.rk_setWorkingMode(WORK_MODE);
@@ -93,7 +94,6 @@ bool InitLoRaWAN(void)
   RAKLoRa.rk_recvData();
   if ( RAKLoRa.rk_recvData() == "OK")
   {
- 
     if (RAKLoRa.rk_initOTAA(DevEui, AppEui, AppKey))
     {
       DebugSerial.println("You init OTAA parameter is OK!");
@@ -125,7 +125,7 @@ bool InitLoRaWAN(void)
       }
     }
   }
-     return false;
+  return false;
 }
  
 void loop() {
