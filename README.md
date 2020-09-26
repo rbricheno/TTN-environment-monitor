@@ -23,9 +23,11 @@ Firstly, you should install the Arduino IDE from the Arduino website (https://ww
 
 Then you should create a The Things Network account on the website (https://account.thethingsnetwork.org/register).
 
-After this, you will need to register your application at https://console.thethingsnetwork.org/applications/add. Here, you need to fill in the application ID and description.
+After this, you will need to register your application at https://console.thethingsnetwork.org/applications/add. Here, you need to fill in the application ID and description. You can just make things up for both of these fields.
 
-Next, you will need to register your device at https://console.thethingsnetwork.org/applications/application/devices/register. You have to enter a Device ID and click the symbol next the Device EUI text box.
+Next, you will need to register your device at https://console.thethingsnetwork.org/applications/application/devices/register. You have to enter a Device ID (wich, again, you can just make up) and click the symbol next the Device EUI text box (to cause the Device EUI to be automatically generated).
+
+Make a note of the Device EUI, Application EUI, and Application Key as you will need these to connect your sensor to The Things Network.
 
 ## Testing LoRaWAN
 
