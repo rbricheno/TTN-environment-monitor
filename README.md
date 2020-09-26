@@ -34,7 +34,7 @@ Now we will test "Over The Air Activation" on the Arduino and shield. Connect th
 
 You will need to download and install the RAK811 Arduino Library from https://github.com/PiSupply/RAK811-Arduino . Download the RAK811-Arduino repository as a Zip file and in the Arduino IDE use "Sketch -> Add Library -> Add .ZIP library" and add the downloaded zip file.
 
-If you have not used your Pi Supply LoRa Node Shield for Arduino before, be wary that some shields work at faster speed, so the baud rate must be changed. To do this, upload the Setbaudrate.ino which can be found in the "examples" folder of the zip file you just downloaded, or downloaded from https://github.com/PiSupply/RAK811-Arduino/tree/master/examples/Setbaudrate . This will set the baud rate to 9600bps, in line with the rest of the code here.
+If you have not used your Pi Supply LoRa Node Shield for Arduino before, be wary that some shields work at faster speed, so the baud rate must be changed. To do this, upload the Setbaudrate.ino which can be found in the "examples" folder of the zip file you just downloaded, or downloaded from https://github.com/PiSupply/RAK811-Arduino/tree/master/examples/Setbaudrate . This will set the baud rate to 9600bps, in line with the rest of the code here. There is no harm in doing this, even if you think the baud rate is already correct, so we strongly recommend you run Setbaudrate.ino at least once before you continue with the workshop to avoid unexpected problems.
 
 Now, in the Arduino IDE, create a new sketch and enter this code: 
 
