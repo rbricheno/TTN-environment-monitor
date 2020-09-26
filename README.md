@@ -32,11 +32,11 @@ Now we will test "Over The Air Activation" on the Arduino and shield. Connect th
 
 ![Connecting the shield](/images/arduino-with-shield.jpg?raw=true "Connecting the shield")
 
-In the Arduino IDE, create a new sketch.
-
 You will need to download and install the RAK811 Arduino Library from https://github.com/PiSupply/RAK811-Arduino . Download the RAK811-Arduino repository as a Zip file and in the Arduino IDE use "Sketch -> Add Library -> Add .ZIP library" and add the downloaded zip file.
 
-Now enter this code: 
+If you have not used your Pi Supply LoRa Node Shield for Arduino before, be wary that some shields work at faster speed, so the baud rate must be changed. To do this, upload the Setbaudrate.ino which can be found in the "examples" folder of the zip file you just downloaded, or downloaded from https://github.com/PiSupply/RAK811-Arduino/tree/master/examples/Setbaudrate . This will set the baud rate to 9600bps, in line with the rest of the code here.
+
+Now, in the Arduino IDE, create a new sketch and enter this code: 
 
 ```c
 #include "RAK811.h"
@@ -240,7 +240,7 @@ void printValues() {
 }
 ```
 
-This program should return 3 values (Temperature, Humidity and Pressure) into the serial monitor which can be accessed by Ctrl+Shift+M. Just be wary that some shields work at faster speed, so the baud rate must be changed.
+This program should return 3 values (Temperature, Humidity and Pressure) into the serial monitor which can be accessed by Ctrl+Shift+M.
 
 ## Sending BME280 data into The Things Network
 
