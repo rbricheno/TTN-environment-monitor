@@ -13,7 +13,7 @@ For the software, we will create Arduino sketches that send sensor data over LoR
 
 For this project you will need the following hardware:
 
-* Arduino Uno - https://store.arduino.cc/arduino-uno-rev3
+* Arduino Uno - https://store.arduino.cc/arduino-uno-rev3 - or a clone of an Arduino Uno board should work fine in our experience.
 
 ![Arduino Uno](/images/arduino-uno.jpg?raw=true "Arduino Uno")
 
