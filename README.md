@@ -1,6 +1,16 @@
 # TTN environment monitor
 *By David Batey, Josh Milroy and Rob Bricheno*
 
+## Contents
+
+1. [Introduction](#Introduction)
+2. [Getting Started](#Getting-Started)
+3. [Testing LoRaWAN](#Testing-LoRaWAN)
+4. [Adding the BME280](#Adding-the-BME280)
+5. [Sending BME280 data into The Things Network](#Sending-BME280-data-into-The-Things-Network)
+6. [Adding a MyDevices dashboard](#Adding-a-MyDevices-dashboard)
+6. [Activation by personalisation method](#Activation-by-personalisation-method)
+
 ## Introduction
 
 In this workshop we make a [LoRaWAN](https://lora-alliance.org/about-lorawan) environment monitor to monitor pressure, temperature and humidity via long range radio.
