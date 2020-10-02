@@ -1,6 +1,14 @@
 # TTN environment monitor
 *By David Batey, Josh Milroy and Rob Bricheno*
 
+## Introduction
+
+In this workshop we make a LoRaWAN environment monitor to monitor pressure, temperature and humidity via long range radio.
+
+For the hardware, we will use an Arduino, a LoRa shield, and a BME280 sensor.
+
+For the software, we will create Arduino sketches that send sensor data over LoRaWAN into The Things Network using the Cayenne LPP protocol. We then configure a cloud dashboard to receive the data from the sensor using the MyDevices platform.
+
 ## Getting started
 
 For this project you will need the following hardware:
@@ -9,13 +17,13 @@ For this project you will need the following hardware:
 
 ![Arduino Uno](/images/arduino-uno.jpg?raw=true "Arduino Uno")
 
-* BME280 sensor in a breakout board - https://www.bosch-sensortec.com/bst/products/all_products/bme280 - You can find these on Amazon or eBay. Ours runs at 5V. To follow the workshop, we will be using the I2C protocol to communicate with the sensor.
+* BME280 pressure, temperature and humidity sensor in a breakout board - https://www.bosch-sensortec.com/bst/products/all_products/bme280 - You can find these on Amazon or eBay. Ours runs at 5V. To follow the workshop, we will be using the I2C protocol to communicate with the sensor.
 
 ![BME280](/images/bme280.jpg?raw=true "BME280")
 
 * UNIROI Starter Kit (or another Arduino starter kit) - http://uniroi.net/a/Products/20190401/70.html - the only things we're using from here are jumper wires and a breadboard.
 
-* Pi Supply Arduino LoRa node shield - https://uk.pi-supply.com/products/iot-lora-node-shield
+* Pi Supply Arduino LoRa node shield (based on RAK wireless RAK811) - https://uk.pi-supply.com/products/iot-lora-node-shield
 
 ![Arduino LoRa node shield](/images/pi-supply-shield.jpg?raw=true "Arduino LoRa node shield")
 
