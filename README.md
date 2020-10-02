@@ -5,7 +5,7 @@
 
 In this workshop we make a [LoRaWAN](https://lora-alliance.org/about-lorawan) environment monitor to monitor pressure, temperature and humidity via long range radio.
 
-For the hardware, we will use an [Arduino](https://www.arduino.cc/), a [LoRa](https://en.wikipedia.org/wiki/LoRa) shield, and a [BME280](https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/) sensor.
+For the hardware, we will use an [Arduino](https://www.arduino.cc/), a [LoRa](https://en.wikipedia.org/wiki/LoRa) [shield](https://www.arduino.cc/en/Main/ArduinoShields), and a [BME280](https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/) sensor.
 
 For the software, we will create Arduino sketches that send sensor data over LoRaWAN into [The Things Network](https://www.thethingsnetwork.org/) using the [Cayenne LPP](https://www.thethingsnetwork.org/docs/applications/cayenne/) protocol. We then configure a cloud dashboard to receive the data from the sensor using the [MyDevices Cayenne](https://developers.mydevices.com/cayenne/features/) platform.
 
