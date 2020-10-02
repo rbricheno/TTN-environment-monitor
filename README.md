@@ -3,11 +3,11 @@
 
 ## Introduction
 
-In this workshop we make a LoRaWAN environment monitor to monitor pressure, temperature and humidity via long range radio.
+In this workshop we make a [LoRaWAN](https://lora-alliance.org/about-lorawan) environment monitor to monitor pressure, temperature and humidity via long range radio.
 
-For the hardware, we will use an Arduino, a LoRa shield, and a BME280 sensor.
+For the hardware, we will use an [Arduino](https://www.arduino.cc/), a [LoRa](https://en.wikipedia.org/wiki/LoRa) shield, and a [BME280](https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/) sensor.
 
-For the software, we will create Arduino sketches that send sensor data over LoRaWAN into The Things Network using the Cayenne LPP protocol. We then configure a cloud dashboard to receive the data from the sensor using the MyDevices platform.
+For the software, we will create Arduino sketches that send sensor data over LoRaWAN into [The Things Network](https://www.thethingsnetwork.org/) using the [Cayenne LPP](https://www.thethingsnetwork.org/docs/applications/cayenne/) protocol. We then configure a cloud dashboard to receive the data from the sensor using the [MyDevices Cayenne](https://developers.mydevices.com/cayenne/features/) platform.
 
 ## Getting started
 
@@ -29,7 +29,7 @@ For this project you will need the following hardware:
 
 Firstly, you should install the Arduino IDE from the Arduino website (https://www.arduino.cc/en/main/software).
 
-Then you should create a The Things Network account on the website (https://account.thethingsnetwork.org/register).
+Then you should create a The Things Network account on their website (https://account.thethingsnetwork.org/register).
 
 After this, you will need to register your application at https://console.thethingsnetwork.org/applications/add. Here, you need to fill in the application ID and description. You can just make things up for both of these fields.
 
